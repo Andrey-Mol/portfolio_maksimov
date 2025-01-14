@@ -1,0 +1,147 @@
+.home {
+    padding: 20px;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.home-title {
+    text-align: center;
+    font-size: 25px;
+    margin: 30px 0 60px 0;
+}
+
+.card-container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap; /* Добавляем обтекание для мобильных устройств */
+    gap: 20px; /* Задаем отступы между картами */
+}
+
+.card {
+    position: relative;
+    width: calc(25% - 20px);
+    height: 500px;
+    border-radius: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end; /* Текст находится внизу */
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    background-size: cover; /* Масштабируем фон */
+    background-position: center;
+    max-width: 300px;
+    margin: auto;
+    min-height: 400px;
+}
+
+.card.selected {
+    transform: translateY(20px); /* Сдвиг вниз */
+}
+
+.card-title {
+    text-align: center;
+    font-size: 28px;
+    font-weight: 500;
+    padding: 20px;
+}
+
+.checkmark {
+    position: absolute;
+    top: -27px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 20px;
+}
+
+.content-section {
+    margin-top: 40px;
+    text-align: center;
+}
+
+.content-banner {
+    margin-bottom: 20px;
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    font-size: 18px;
+    align-content: center;
+}
+
+.content-banner h2 {
+    font-size: 24px;
+    font-weight: 400;
+}
+
+.content-banner h1 {
+    font-size: 38px;
+    font-weight: 400;
+    margin-bottom: 10px;
+}
+
+.gallery {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px; /* Добавляем промежутки между картинками */
+    justify-content: space-between;
+}
+
+.gallery img {
+    aspect-ratio: 1 / 1;
+    width: calc(33.33% - 10px); /* Для экрана большого размера картинок 3 на ряд */
+    object-fit: cover;
+    margin: 5px 0; /* Отступы сверху и снизу */
+}
+
+/* Медиазапросы для мобильных устройств */
+@media (max-width: 768px) {
+    .card {
+        width: calc(50% - 10px); /* Карточки занимают по 50% на планшетах и мобильных */
+        height: 300px; /* Высота карточки уменьшается */
+    }
+
+    .card-title {
+        font-size: 20px; /* Уменьшаем размер текста в карточках */
+    }
+
+    .content-banner {
+        font-size: 14px; /* Уменьшаем шрифт в контент-блоке */
+    }
+
+    .content-banner h1 {
+        font-size: 28px; /* Уменьшаем шрифт заголовка */
+    }
+
+    .content-banner h2 {
+        font-size: 20px; /* Уменьшаем шрифт подзаголовка */
+    }
+
+    .gallery img {
+        width: calc(50% - 10px); /* Для мобильных 2 картинки на ряд */
+    }
+}
+
+@media (max-width: 480px) {
+    .card {
+        width: 100%; /* Карточки занимают 100% на маленьких экранах */
+        height: 250px; /* Высота карточки еще меньше */
+        margin-bottom: 20px;
+        margin-top: 20px;
+    }
+
+    .card-title {
+        font-size: 18px; /* Еще меньше текст на мобильных */
+    }
+
+    .content-banner h1 {
+        font-size: 24px; /* Еще меньше шрифт заголовка */
+    }
+
+    .content-banner h2 {
+        font-size: 18px; /* Еще меньше шрифт подзаголовка */
+    }
+
+    .gallery img {
+        width: 100%; /* Каждое изображение занимает 100% ширины */
+        margin-bottom: 10px; /* Отступ снизу */
+    }
+}

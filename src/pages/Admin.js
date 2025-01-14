@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { fetchProjects, addProject, deleteProject, updateProject, login } from '../firebase/firebase';
 import { AuthContext } from '../context/AuthContext';
 
+
 const Admin = () => {
     const { currentUser, logout, loading } = useContext(AuthContext);
     const [projects, setProjects] = useState([]);
@@ -9,6 +10,10 @@ const Admin = () => {
     const [editingProject, setEditingProject] = useState(null);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [imageFile, setImageFile] = useState(null); // Для хранения выбранного файла
+    const [imagePreview, setImagePreview] = useState(null); // Для превью изображения
+    const [imageUrl, setImageUrl] = useState(null); // Для хранения URL загруженного изображения
+
 
     // Загрузка проектов при монтировании компонента
     useEffect(() => {
@@ -35,9 +40,23 @@ const Admin = () => {
             return;
         }
 
-        await addProject(newProject);
-        setProjects([...projects, { id: Date.now(), ...newProject }]);
+        if (!imageUrl) {
+            alert('Please upload an image first.');
+            return;
+        }
+
+        const newProjectData = {
+            title: newProject.title,
+            description: newProject.description,
+            image: imageUrl, // URL загруженного изображения
+        };
+
+        await addProject(newProjectData);
+        setProjects([...projects, { id: Date.now(), ...newProjectData }]);
         setNewProject({ title: '', description: '', image: '' });
+        setImageFile(null);
+        setImagePreview(null);
+        setImageUrl(null);
     };
 
     // Обработка удаления проекта
@@ -56,6 +75,49 @@ const Admin = () => {
         await updateProject(editingProject.id, editingProject);
         setProjects(projects.map((project) => (project.id === editingProject.id ? editingProject : project)));
         setEditingProject(null);
+    };
+
+    // Обработка выбора файла
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        setImageFile(file);
+
+        // Превью изображения
+        const reader = new FileReader();
+        reader.onload = () => {
+            setImagePreview(reader.result);
+        };
+        reader.readAsDataURL(file);
+    };
+
+    // Обработка загрузки изображения на сервер
+    const handleUploadImage = async () => {
+        if (!imageFile) {
+            alert('Please select an image first.');
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('image', imageFile);
+
+        try {
+            const response = await fetch('..../public/upload.php', {
+                method: 'POST',
+                body: formData,
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                setImageUrl(result.imageUrl); // Сохраняем URL загруженного изображения
+                alert('Image uploaded successfully!');
+            } else {
+                alert('Error uploading image: ' + result.error);
+            }
+        } catch (error) {
+            console.error('Error uploading image:', error);
+            alert('Error uploading image.');
+        }
     };
 
     // Если загрузка, показываем сообщение
@@ -109,11 +171,13 @@ const Admin = () => {
                     onChange={(e) => setNewProject({ ...newProject, description: e.target.value })}
                 />
                 <input
-                    type="text"
-                    placeholder="Image URL"
-                    value={newProject.image}
-                    onChange={(e) => setNewProject({ ...newProject, image: e.target.value })}
+                    type="file"
+                    accept="image/*"
+                    onChange={handleFileChange}
                 />
+                {imagePreview && <img src={imagePreview} alt="Preview" style={{ maxWidth: '200px', marginTop: '10px' }} />}
+                <button onClick={handleUploadImage} style={{ marginTop: '10px' }}>Upload Image</button>
+
                 <button onClick={handleAddProject}>Add Project</button>
             </div>
 

@@ -3,8 +3,8 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f9f9f9;
-    color: #333;
+    background-color: black;
+    color: #F6F6F6;
 }
 
 /* Контейнер для страниц */
@@ -87,34 +87,6 @@ input[type="password"] {
 
 .admin-panel h2 {
     margin-bottom: 20px;
-}
-
-/* Шапка */
-header {
-    background-color: #007bff;
-    color: white;
-    padding: 20px;
-    text-align: center;
-}
-
-header a {
-    color: white;
-    text-decoration: none;
-    margin: 0 10px;
-    font-size: 18px;
-}
-
-header a:hover {
-    text-decoration: underline;
-}
-
-/* Подвал */
-footer {
-    background-color: #333;
-    color: white;
-    text-align: center;
-    padding: 10px;
-    margin-top: 20px;
 }
 
 /* Отступы для секций */
